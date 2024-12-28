@@ -8,6 +8,13 @@ import smtplib
 from email.message import EmailMessage
 from flask import Flask
 import threading
+from datetime import datetime
+import pytz
+# Get the current time in UTC
+utc_now = datetime.now(pytz.utc)
+# Convert UTC time to IST
+ist_timezone = pytz.timezone('Asia/Kolkata')
+ist_now = utc_now.astimezone(ist_timezone)
 
 app = Flask(__name__)
 
@@ -93,7 +100,7 @@ def monitor_website(url):
                 body = (
                     f"Game: {game_name},\n"
                     f"Spin Result: {game_result},\n"
-                    f"Instance: {instance_value}\n"
+                    f"Instance in IST: {ist_now.strftime('%H:%M:%S')}\n"
                     f"URL: {url}"
                 )
                 send_email(subject, body)
